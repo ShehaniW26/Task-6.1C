@@ -1,7 +1,7 @@
 pipeline{
     agent any
 
-    environtment {
+    environment {
         DIRECTORY_PATH = '/path/to/code/directory'
         TESTING_ENVIRONMENT = 'TestingEnvironment'
         PRODUCTION_ENVIRONMENT = 'Shehani'
