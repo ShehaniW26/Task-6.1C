@@ -1,49 +1,46 @@
 pipeline{
     agent any
 
-    environment {
-        DIRECTORY_PATH = '/path/to/code/directory'
-        TESTING_ENVIRONMENT = 'TestingEnvironment'
-        PRODUCTION_ENVIRONMENT = 'Shehani'
-    }
     stages{
         stage('Build'){
             steps{
-                echo "fetch the source code from '${env.DIRECTORY_PATH}'"
-                echo "compile the code and generate any necessary artifacts"
+                sh 'mvn clean package'
             }
         }
-        stage('Test'){
+        stage('Unit and Integration Tests'){
             steps{
-                echo "unit tests"
-                echo "integration tests"
-            }
-
-        }
-        stage('Code Quality check'){
-            steps{
-                echo "check the quality of the code"
+                sh 'mvn test'
+                sh 'newman run collection.json'
             }
 
         }
-        stage('Deploy'){
+        stage('Code Analysis'){
             steps{
-                echo "deploy the application to '${env.TESTING_ENVIROMENT}'"
+                sh 'sonar-scanner'
             }
 
         }
-        stage('Approval'){
+        stage('Security Scan'){
             steps{
-                echo "Waiting for the manual approval..."
-                script{
-                    sleep(time: 10, unit: 'SECONDS')
-                }
+                sh 'zap-cli -t <target_URL>'
+            }
+
+        }
+        stage('Deploy to Staging'){
+            steps{
+                sh 'ansible-playbook deploy-to-staging.yml'
+            }
+
+        }
+        stage('Integration Tests on Staging'){
+            steps{
+                sh 'newman run staging-collection.json'
             }
 
         }
         stage('Deploy to Production'){
             steps{
-                echo "Deploying the code to '${env.PRODUCTION_ENVIRONMENT}'"
+                sh 'ansible-playbook deploy-to-production.yml'
             }
 
         }
