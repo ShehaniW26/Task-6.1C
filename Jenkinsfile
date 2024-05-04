@@ -4,43 +4,58 @@ pipeline{
     stages{
         stage('Build'){
             steps{
-                echo "mvn clean package"
+                echo "The code was built using the Maven automation tool, which compiled and packaged the code."
             }
         }
         stage('Unit and Integration Tests'){
             steps{
-                echo "mvn test"
-                echo "newman run collection.json"
+                echo "Unit tests have been carried out to ensure the code functions as expected."
+                echo "Integrations tests have been run to ensure different components of the application work together as expected."
+                echo "The unit tests were carried out using the JUnit automation tool and the integration tests were carried out using Selenium and Postman."  
+            }
+            post {
+                success{
+                    mail to: "shehani.wickremasekera@gmail.com",
+                    subject: "Unit Integration Tests Status Email",
+                    body: "Unit Integration Tests were successful!!!"
+                }
             }
 
         }
         stage('Code Analysis'){
             steps{
-                echo "sonar-scanner"
+                echo "The code analysis was carried out using the SonarQube analysis tool."
             }
 
         }
         stage('Security Scan'){
             steps{
-                echo "zap-cli -t <target_URL>"
+                echo "The security scan was carried out using the OWASP ZAP scanning tool."
+            }
+            post {
+                success{
+                    mail to: "shehani.wickremasekera@gmail.com",
+                    subject: "Security Scan Status Email",
+                    body: "Security Scan was successful!!!"
+                }
             }
 
         }
         stage('Deploy to Staging'){
             steps{
-                echo "ansible-playbook deploy-to-staging.yml"
+                echo "The application was deployed to the staging server AWS EC2 instance using the Ansible deployment tool."
             }
 
         }
         stage('Integration Tests on Staging'){
             steps{
-                echo "newman run staging-collection.json"
+                echo "Integration tests were run on the staging environtment."
             }
 
         }
         stage('Deploy to Production'){
             steps{
-                echo "ansible-playbook deploy-to-production.yml"
+                echo "The application was deploed to the AWS EC2 instance server using the deployment tool, Anisble."
             }
 
         }
