@@ -21,7 +21,7 @@ pipeline {
                 success {
                     echo "Unit and Integration Testing was successful."
                     emailext(
-                        to: 'sakethreddy0014@gmail.com',
+                        to: 'shehani.wickremasekera@gmail.com',
                         subject: "Tests Passed: ${currentBuild.currentResult}",
                         body: "Unit and Integration tests passed successfully.",
                         attachLog: true
@@ -30,7 +30,7 @@ pipeline {
                 failure {
                     echo "Unit and Integration Testing failed."
                     emailext(
-                        to: 'sakethreddy0014@gmail.com',
+                        to: 'shehani.wickremasekera@gmail.com',
                         subject: "Tests Failed: ${currentBuild.currentResult}",
                         body: "Unit and Integration tests failed. Check the logs for details.",
                         attachLog: true
@@ -55,7 +55,7 @@ pipeline {
                 success {
                     echo "Security Scan passed."
                     emailext(
-                        to: 'sakethreddy0014@gmail.com',
+                        to: 'shehani.wickremasekera@gmail.com',
                         subject: "Security Scan Passed: ${currentBuild.currentResult}",
                         body: "Security scan completed successfully.",
                         attachLog: true
@@ -64,7 +64,7 @@ pipeline {
                 failure {
                     echo "Security Scan failed."
                     emailext(
-                        to: 'sakethreddy0014@gmail.com',
+                        to: 'shehani.wickremasekera@gmail.com',
                         subject: "Security Scan Failed: ${currentBuild.currentResult}",
                         body: "Security scan encountered issues. Check the logs for details.",
                         attachLog: true
