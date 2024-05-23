@@ -18,11 +18,21 @@ pipeline {
                 // sh 'mvn verify'
             }
             post {
-                always {
+                success {
+                    echo "Unit and Integration Testing was successful."
                     emailext(
                         to: 'shehani.wickremasekera@gmail.com',
                         subject: "Tests Passed: ${currentBuild.currentResult}",
                         body: "Unit and Integration tests passed successfully.",
+                        attachLog: true
+                    )
+                }
+                failure {
+                    echo "Unit and Integration Testing failed."
+                    emailext(
+                        to: 'shehani.wickremasekera@gmail.com',
+                        subject: "Tests Failed: ${currentBuild.currentResult}",
+                        body: "Unit and Integration tests failed. Check the logs for details.",
                         attachLog: true
                     )
                 }
