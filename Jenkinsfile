@@ -3,12 +3,13 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo "Using Gradle for automated builds" // Changed Maven to Gradle
+                echo "Building the code using Maven."
+
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                echo "Running unit and integration tests with TestNG" // Changed JUnit to TestNG
+                echo "Running unit tests with JUnit and integration tests with Selenium and Postman."
             }
 		post {
                 success {
@@ -27,12 +28,12 @@ pipeline {
         }
         stage('Code Analysis') {
             steps {
-                echo "Running code analysis with SonarCloud" // Changed SonarQube to SonarCloud
+                echo "Performing code analysis with SonarQube."
             }
         }
         stage('Security Scan') {
             steps {
-                echo "Running security scan with Snyk" // Changed OWASP ZAP to Snyk
+                echo "Conducting security scan with OWASP ZAP."
             }
 		post {
                 success {
@@ -51,17 +52,17 @@ pipeline {
         }
         stage('Deploy to Staging') {
             steps {
-                echo "Deploying to staging server AWS EC2(staging)"
+                echo "Deploying to staging server on AWS EC2 instance."
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                echo "Running integration tests on staging environment"
+                echo "Executing integration tests in staging environment."
             }
         }
         stage('Deploy to Production') {
             steps {
-                echo "Deploying to production server (AWS EC2)"
+                echo "Deploying to production environment."
             }
         }
     }
