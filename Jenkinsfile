@@ -1,97 +1,83 @@
 pipeline {
     agent any
-
     stages {
         stage('Build') {
             steps {
-                echo "Building the code using Maven."
-                // Use Maven to compile and package the code
-                // sh 'mvn clean package'
+                echo "Using Gradle for automated builds" // Changed Maven to Gradle
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                echo "Running unit tests with JUnit and integration tests with Selenium and Postman."
-                // Run unit tests with JUnit
-                // sh 'mvn test'
-                // Run integration tests with Selenium and Postman
-                // sh 'mvn verify'
+                echo "Running unit and integration tests with TestNG" // Changed JUnit to TestNG
             }
-            post {
+		post {
                 success {
-                    echo "Unit and Integration Testing was successful."
-                    emailext(
-                        mail to: 'shehani.wickremasekera@gmail.com',
-                        subject: "Tests Passed: ${currentBuild.currentResult}",
-                        body: "Unit and Integration tests passed successfully.",
-                        attachLog: true
-                    )
+                    emailext attachLog: true,
+                    subject: "Tests Completed Successfully",
+		    body: "Unit and Integration Tests are completed successfully.",
+                    to: "shehani.wickremasekera@gmail.com"  
                 }
                 failure {
-                    echo "Unit and Integration Testing failed."
-                    emailext(
-                        mail to: 'shehani.wickremasekera@gmail.com',
-                        subject: "Tests Failed: ${currentBuild.currentResult}",
-                        body: "Unit and Integration tests failed. Check the logs for details.",
-                        attachLog: true
-                    )
+                    emailext attachLog: true,
+                    subject: "Tests Failed",
+		    body: "Unit and Integration Tests got failed. Check the logs for details.",
+                    to: "shehani.wickremasekera@gmail.com" 
                 }
             }
         }
         stage('Code Analysis') {
             steps {
-                echo "Performing code analysis with SonarQube."
-                // Run SonarQube analysis
-                // sh 'mvn sonar:sonar'
+                echo "Running code analysis with SonarCloud" // Changed SonarQube to SonarCloud
             }
         }
         stage('Security Scan') {
             steps {
-                echo "Conducting security scan with OWASP ZAP."
-                // Run OWASP ZAP security scan
-                // sh 'zap-cli quick-scan http://yourapplication'
+                echo "Running security scan with Snyk" // Changed OWASP ZAP to Snyk
             }
-            post {
+		post {
                 success {
-                    echo "Security Scan passed."
-                    emailext(
-                        mail to: 'shehani.wickremasekera@gmail.com',
-                        subject: "Security Scan Passed: ${currentBuild.currentResult}",
-                        body: "Security scan completed successfully.",
-                        attachLog: true
-                    )
+                   	emailext attachLog: true,
+			subject: 'Security Scan Completed Successfully',
+			body: 'Security Scan completed successfully.',
+                    	to: 'shehani.wickremasekera@gmail.com'
                 }
                 failure {
-                    echo "Security Scan failed."
-                    emailext(
-                        mail to: 'shehani.wickremasekera@gmail.com',
-                        subject: "Security Scan Failed: ${currentBuild.currentResult}",
-                        body: "Security scan encountered issues. Check the logs for details.",
-                        attachLog: true
-                    )
+                        emailext attachLog: true,
+                        subject: 'Security Scan Failed',
+			body: 'Security Scan failed. Check the logs for details.',
+                        to: 'shehani.wickremasekera@gmail.com'      
                 }
             }
         }
         stage('Deploy to Staging') {
             steps {
-                echo "Deploying to staging server on AWS EC2 instance."
-                // Deploy to staging server
-                // sh 'scp target/yourapp.war ec2-user@staging-server:/path/to/deploy'
+                echo "Deploying to staging server AWS EC2(staging)"
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                echo "Executing integration tests in staging environment."
-                // Run integration tests in staging
-                // sh 'mvn verify -Pstaging'
+                echo "Running integration tests on staging environment"
             }
         }
         stage('Deploy to Production') {
             steps {
-                echo "Deploying to production environment."
-                // Deploy to production server
-                // sh 'scp target/yourapp.war ec2-user@production-server:/path/to/deploy'
+                echo "Deploying to production server (AWS EC2)"
             }
+        }
+    }
+    post {
+        success {
+ 
+           	emailext attachLog: true,
+                subject: "Pipeline Successful",
+                body: "The Jenkins pipeline completed successfully.",
+               	to: "shehani.wickremasekera@gmail.com"
+        }
+        failure {
+           	emailext attachLog: true,
+                subject: "Pipeline Failed",
+                body: "The Jenkins pipeline failed. Check the logs for details.",
+                to: "shehani.wickremasekera@gmail.com" 
         }
     }
 }
