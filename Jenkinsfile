@@ -17,7 +17,7 @@ pipeline{
                 success{
                     mail to: "shehani.wickremasekera@gmail.com",
                     subject: "Unit Integration Tests Status Email",
-                    body: "Unit Integration Tests were successful!!!\n\nBuild log:\n${BUILD_LOG, maxLines=100, escapeHtml=false}"
+                    body: "Unit Integration Tests were successful!!!\n\nBuild log:\n${currentBuild.rawBuild.getLog(100)}"
                 }
             }
 
@@ -36,7 +36,7 @@ pipeline{
                 success{
                     mail to: "shehani.wickremasekera@gmail.com",
                     subject: "Security Scan Status Email",
-                    body: "Security Scan was successful!!!\n\nBuild log:\n${BUILD_LOG, maxLines=100, escapeHtml=false}"
+                    body: "Security Scan was successful!!!\n\nBuild log:\n${currentBuild.rawBuild.getLog(100)}"
                 }
             }
 
