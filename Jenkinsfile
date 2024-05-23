@@ -4,53 +4,93 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo "The code was built using the Maven automation tool, which compiled and packaged the code."
+                echo "Building the code using Maven."
+                // Use Maven to compile and package the code
+                // sh 'mvn clean package'
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                echo "Unit tests have been carried out to ensure the code functions as expected."
-                echo "Integration tests have been run to ensure different components of the application work together as expected."
-                echo "The unit tests were carried out using the JUnit automation tool and the integration tests were carried out using Selenium and Postman."  
+                echo "Running unit tests with JUnit and integration tests with Selenium."
+                // Run unit tests with JUnit
+                // sh 'mvn test'
+                // Run integration tests with Selenium
+                // sh 'mvn verify'
             }
             post {
                 success {
-                    emailext body: "Unit Integration Tests were successful!!!\n\nBuild log:\n${BUILD_DATA, maxLines=100, escapeHtml=false}",
-                             subject: "Unit Integration Tests Status Email",
-                             to: "shehani.wickremasekera@gmail.com"
+                    echo "Unit and Integration Testing was successful."
+                    emailext(
+                        to: 'sakethreddy0014@gmail.com',
+                        subject: "Tests Passed: ${currentBuild.currentResult}",
+                        body: "Unit and Integration tests passed successfully.",
+                        attachLog: true
+                    )
+                }
+                failure {
+                    echo "Unit and Integration Testing failed."
+                    emailext(
+                        to: 'sakethreddy0014@gmail.com',
+                        subject: "Tests Failed: ${currentBuild.currentResult}",
+                        body: "Unit and Integration tests failed. Check the logs for details.",
+                        attachLog: true
+                    )
                 }
             }
         }
         stage('Code Analysis') {
             steps {
-                echo "The code analysis was carried out using the SonarQube analysis tool."
+                echo "Performing code analysis with SonarQube."
+                // Run SonarQube analysis
+                // sh 'mvn sonar:sonar'
             }
         }
         stage('Security Scan') {
             steps {
-                echo "The security scan was carried out using the OWASP ZAP scanning tool."
+                echo "Conducting security scan with OWASP ZAP."
+                // Run OWASP ZAP security scan
+                // sh 'zap-cli quick-scan http://yourapplication'
             }
             post {
                 success {
-                    emailext body: "Security Scan was successful!!!\n\nBuild log:\n${BUILD_DATA, maxLines=100, escapeHtml=false}",
-                             subject: "Security Scan Status Email",
-                             to: "shehani.wickremasekera@gmail.com"
+                    echo "Security Scan passed."
+                    emailext(
+                        to: 'sakethreddy0014@gmail.com',
+                        subject: "Security Scan Passed: ${currentBuild.currentResult}",
+                        body: "Security scan completed successfully.",
+                        attachLog: true
+                    )
+                }
+                failure {
+                    echo "Security Scan failed."
+                    emailext(
+                        to: 'sakethreddy0014@gmail.com',
+                        subject: "Security Scan Failed: ${currentBuild.currentResult}",
+                        body: "Security scan encountered issues. Check the logs for details.",
+                        attachLog: true
+                    )
                 }
             }
         }
         stage('Deploy to Staging') {
             steps {
-                echo "The application was deployed to the staging server AWS EC2 instance using the Ansible deployment tool."
+                echo "Deploying to staging server on AWS EC2 instance."
+                // Deploy to staging server
+                // sh 'scp target/yourapp.war ec2-user@staging-server:/path/to/deploy'
             }
         }
         stage('Integration Tests on Staging') {
             steps {
-                echo "Integration tests were run on the staging environment."
+                echo "Executing integration tests in staging environment."
+                // Run integration tests in staging
+                // sh 'mvn verify -Pstaging'
             }
         }
         stage('Deploy to Production') {
             steps {
-                echo "The application was deployed to the AWS EC2 instance server using the deployment tool, Ansible."
+                echo "Deploying to production environment."
+                // Deploy to production server
+                // sh 'scp target/yourapp.war ec2-user@production-server:/path/to/deploy'
             }
         }
     }
