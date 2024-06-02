@@ -3,13 +3,13 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo "Building the code using Maven123."
+                echo "Building the code using the build automation tool, Gradle."
 
             }
         }
         stage('Unit and Integration Tests') {
             steps {
-                echo "Running unit tests with JUnit and integration tests with Selenium and Postman."
+                echo "Running unit tests with JUnit and integration tests with Appium and JUnit."
             }
 		post {
                 success {
@@ -28,12 +28,12 @@ pipeline {
         }
         stage('Code Analysis') {
             steps {
-                echo "Performing code analysis with SonarQube."
+                echo "Performing code analysis with Flake8."
             }
         }
         stage('Security Scan') {
             steps {
-                echo "Conducting security scan with OWASP ZAP."
+                echo "Conducting security scan with Veracode."
             }
 		post {
                 success {
@@ -52,7 +52,7 @@ pipeline {
         }
         stage('Deploy to Staging') {
             steps {
-                echo "Deploying to staging server on AWS EC2 instance."
+                echo "Deploying to staging server on Microsoft Azure."
             }
         }
         stage('Integration Tests on Staging') {
